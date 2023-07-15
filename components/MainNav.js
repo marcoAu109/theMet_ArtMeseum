@@ -1,4 +1,11 @@
-import { Container, Nav, Navbar, NavDropdown, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  Button,
+} from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -6,35 +13,80 @@ import { useState } from "react";
 export default function MainNav() {
   const [searchField, setSearchField] = useState("");
   const router = useRouter();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   function submitForm(e) {
     e.preventDefault(); // prevent the browser from automatically submitting the form
-    // console.log(`form submitted - userName: ${searchField}`);// test only
     router.push(`/artwork?title=true&q=${searchField}`);
   }
+
+  function toggleIsExpanded() {
+    setIsExpanded(!isExpanded);
+  }
+
+  function closeNavBar() {
+    setIsExpanded(false);
+  }
+
   return (
     <>
-      <Navbar bg="info" expand="lg" className="fixed-top navbar-dark bg-dark">
+      <Navbar
+        bg="info"
+        expand="lg"
+        expanded={isExpanded}
+        className="fixed-top navbar-dark bg-dark"
+      >
         <Container>
           <Navbar.Brand>THE MET</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle
+            onClick={toggleIsExpanded}
+            aria-controls="basic-navbar-nav"
+          />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Link href="/" passHref legacyBehavior>
-                <Nav.Link>Home</Nav.Link>
+                <Nav.Link
+                  onClick={closeNavBar}
+                  active={router.pathname === "/"}
+                >
+                  Home
+                </Nav.Link>
               </Link>
               <Link href="/search" passHref legacyBehavior>
-                <Nav.Link>Advanced Search</Nav.Link>
+                <Nav.Link
+                  onClick={closeNavBar}
+                  active={router.pathname === "/search"}
+                >
+                  Advanced Search
+                </Nav.Link>
               </Link>
               <NavDropdown title="Artworks Highlight" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/theBuddha">The Buddha</NavDropdown.Item>
-                <NavDropdown.Item href="/theZenMaster">
+                <NavDropdown.Item
+                  onClick={closeNavBar}
+                  active={router.pathname === "/theBuddha"}
+                  href="/theBuddha"
+                >
+                  The Buddha
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={closeNavBar}
+                  active={router.pathname === "/theZenMaster"}
+                  href="/theZenMaster"
+                >
                   Zen Master
                 </NavDropdown.Item>
-                <NavDropdown.Item href="/monet">
+                <NavDropdown.Item
+                  onClick={closeNavBar}
+                  active={router.pathname === "/monet"}
+                  href="/monet"
+                >
                   Monet
                 </NavDropdown.Item>
-                <NavDropdown.Item href="/mountFuji">
+                <NavDropdown.Item
+                  onClick={closeNavBar}
+                  active={router.pathname === "/mountFuji"}
+                  href="/mountFuji"
+                >
                   Mt. Fuji
                 </NavDropdown.Item>
               </NavDropdown>
